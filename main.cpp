@@ -87,13 +87,11 @@ void setup(){
     }                                       // fim relogio
     calc:                                   //inicio menu calc
     l="";
-    while(l!="1"||l!="2"||l!="3"||l!="4"||l!="#"){
+    while(l!="1"||l!="2"||l!="3"||l!="#"){
         lcd.setCursor(8,0);
         lcd.print("Calc");
         lcd.setCursor(0,1);
         lcd.print("(1)% (2)2Grau (3)Tri");
-        lcd.setCursor(0,2);
-        lcd.print("(4)Soma & Subtracao");
         lcd.setCursor(13,3);
         lcd.print("(#)Menu");
         l=teclado.getKey();
@@ -108,10 +106,6 @@ void setup(){
         else if(l=="3"){
             lcd.clear();
             goto trigo;
-        }
-        else if(l=="4"){
-            lcd.clear();
-            //goto soma;
         }
         else if(l=="#"){
             lcd.clear();
