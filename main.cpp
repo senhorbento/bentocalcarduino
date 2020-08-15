@@ -32,8 +32,9 @@ void setup(){
     lcd.init();
     lcd.backlight();
     lcd.clear();
-        while(l!="1"||l!="2"){                  //inicio menu e inicio programa
-            menu:
+        menu:                                    //inicio menu e inicio programa
+        l="";
+        while(l!="1"||l!="2"||l!="3"){
             lcd.setCursor(8,0);
             lcd.print("Menu");
             lcd.setCursor(0,1);
@@ -57,12 +58,12 @@ void setup(){
                 goto sensor;
             }
         }                                       //fim menu
-        while(l!="#"){                          //inicio relogio
-            dia:
+        dia:
+        l="";temp=0;umi=0;                     //inicio relogio
+        while(l!="#"){
             if ((millis() - timer) > 1000){
                 temp = dht.readTemperature();
                 umi = dht.readHumidity();
-                l="";
                 timer=millis();
                 lcd.setCursor(8,0);
                 lcd.print("Dia");
@@ -81,14 +82,13 @@ void setup(){
             }
             l=teclado.getKey();
             if(l=="#"){
-                    l="";
                     lcd.clear();
                     goto menu;
             }
         }                                       // fim relogio
-        while(l!="1"||l!="2"||l!="3"||l!="4"||l!="#"){  //inicio menu calc
-            calc:
-            l="";
+        calc:                                   //inicio menu calc
+        l="";
+        while(l!="1"||l!="2"||l!="3"||l!="4"||l!="#"){
             lcd.setCursor(8,0);
             lcd.print("Calc");
             lcd.setCursor(0,1);
@@ -99,33 +99,28 @@ void setup(){
             lcd.print("(#)Menu");
             l=teclado.getKey();
             if(l=="1"){
-                l="";h=0;
                 lcd.clear();
                 goto porcentagem;
             }
             else if(l=="2"){
-                l="";h=0;
                 lcd.clear();
                 goto grau;
             }
             else if(l=="3"){
-                l="";h=0;
                 lcd.clear();
                 goto trigo;
             }
             else if(l=="4"){
-                l="";h=0;
                 lcd.clear();
                 //goto soma;
             }
             else if(l=="#"){
-                l="";h=0;
                 lcd.clear();
                 goto menu;
             }
         }                                       //fim menu calc
         porcentagem:                            //inicio porcentagem 
-        k=3;j=1;a=0;b=0;c=0;
+        l="";i="";k=3;j=1;a=0;b=0;c=0;h=0;
         while(h==0){                           
             lcd.setCursor(4,0);
             lcd.print("Porcentagem");
@@ -149,7 +144,7 @@ void setup(){
                 else if(l=="#"&&j==2){
                     b=i.toFloat();
                     c=(a*b)/100;                 //Contribuição da Bianca a braba do arduino
-                    i="";h=1;
+                    h=1;
                     lcd.clear();
                     lcd.setCursor(4,0);
                     lcd.print("Porcentagem");
@@ -163,19 +158,18 @@ void setup(){
             }                                      
         }                                       
         while(h==1){
-        l=teclado.getKey();
-        if(l=="#"){
-            l="";h=0;
-            lcd.clear();
-            goto porcentagem;
-        }
-        if(l=="-"){
-            l="";h=0;
-            lcd.clear();
-            goto calc;
+            l=teclado.getKey();
+            if(l=="#"){
+                lcd.clear();
+                goto porcentagem;
+            }
+            if(l=="-"){
+                lcd.clear();
+                goto calc;
+            }
         }                                       //fim porcentagem
         grau:                                   //inicio grau
-        k=3;j=1;a=0;b=0;c=0;d=0;e=1;x1=0;x2=0;l="";i="";
+        k=3;j=1;a=0;b=0;c=0;d=0;e=1;h=0;x1=0;x2=0;l="";i="";
         while(h==0){                            
             lcd.setCursor(3,0);
             lcd.print("Equacao 2 grau");
@@ -219,14 +213,14 @@ void setup(){
                     lcd.setCursor(8,0);
                     lcd.print(d);
                     if(d<0){
-                        l="";h=1;
+                        h=1;
                         lcd.setCursor(0, 1);
                         lcd.print("Impossivel calcular");
                         lcd.setCursor(0, 3);
                         lcd.print("(*)Calc   (#)Repetir");
                     }
                     else{
-                        l="";h=1;
+                        h=1;
                         x1=(b*-1+sqrt(d))/(2*a);
                         x2=(b*-1-sqrt(d))/(2*a);
                         lcd.setCursor(0,1);
@@ -246,19 +240,16 @@ void setup(){
         while(h==1){
         l=teclado.getKey();
             if(l=="#"){
-                h=0;
                 lcd.clear();
                 goto grau;
             }
             if(l=="-"){
-                h=0;
                 lcd.clear();
                 goto calc;
             }
         }                                       //fim grau
         trigo:                                  //inicio menu trigonometria
-        k=8;
-        while(h==0){
+        while(l!="1"||l!="2"||l!="3"||l!="#"){
             lcd.setCursor(3,0);
             lcd.print("Trigonometria");
             lcd.setCursor(0,1);
@@ -266,7 +257,7 @@ void setup(){
             lcd.setCursor(0,2);
             lcd.print("(2)Cosseno");
             lcd.setCursor(0,3);
-            lcd.print("(3)Tangente");
+            lcd.print("(3)Tangente (#)Menu");
             l=teclado.getKey();
                 if(l=="1"){
                     h=1;l="";
@@ -275,67 +266,83 @@ void setup(){
                 }
                 else if(l=="2"){}
                 else if(l=="3"){}
+                else if(l=="#"){
+                    lcd.clear();
+                    goto menu;
+                }
         }                                       //fim menu trigonometria
         seno:                                   //inicio seno
-        while(h==1){
+        l="";i="";k=7;a=0;h=0;
+        while(h==0){
             lcd.setCursor(3,0);
             lcd.print("Trig-Seno");
             lcd.setCursor(0,1);
             lcd.print("Angulo:");
-            lcd.setCursor(k,1);
             l=teclado.getKey();
-            if(l=!NO_KEY){
-                if(l!="#"){
+            if(l!=NO_KEY){
+                if(l!="#"&&l!="-"){
                     k=k+1;
                     lcd.setCursor(k,1);
                     lcd.print(l);
                     i=i+l;
                 }
-                else{
+                else if(l=="#"){
                     a=i.toFloat();
                     a=sin(a);
                     lcd.setCursor(0,2);
                     lcd.print("Seno=");
                     lcd.setCursor(6,2);
                     lcd.print(a);
+                    lcd.setCursor(0, 3);
+                    lcd.print("(*)Calc   (#)Repetir");
+                    h=1;
                 }
             }
-        }                                       //fim seno
-        while(l!="#"&&h==0){                   //inicio sensor
-            sensor:
-            if ((millis()-timer)>1000){
-                a=(sonar.ping_median(10));
-                a=(sonar.convert_cm(a));
-                l="";
-                timer=millis();
-                lcd.setCursor(8,0);
-                lcd.print("Sensor");
-                lcd.setCursor(0,1);
-                lcd.print("Distancia = 0000");
-                if(a<10){
-                    lcd.setCursor(15,1);
-                    lcd.print(a);  
-                }
-                else if(a>10&&a<99){
-                    lcd.setCursor(14,1);
-                    lcd.print(a); 
-                }
-                else{
-                    lcd.setCursor(13,1);
-                    lcd.print(a); 
-                }
-                lcd.setCursor(17,1);
-                lcd.print("cm");
-                lcd.setCursor(13,3);
-                lcd.print("(#)Menu");
-            }
-            l=teclado.getKey();
+        }
+        while(h==1){
+        l=teclado.getKey();
             if(l=="#"){
-                l="";a=0;h=1;
                 lcd.clear();
-                goto menu;
+                goto seno;
             }
-        }                                       //fim sensor
-    }                                           //fim programa
-}
+            if(l=="-"){
+                lcd.clear();
+                goto calc;
+            }
+        }                                         //fim seno
+    sensor:                                      //inicio sensor
+    l="";a=0;
+    while(l!="#"){                   
+        if ((millis()-timer)>1000){
+            a=(sonar.ping_median(10));
+            a=(sonar.convert_cm(a));
+            timer=millis();
+            lcd.setCursor(8,0);
+            lcd.print("Sensor");
+            lcd.setCursor(0,1);
+            lcd.print("Distancia = 0000");
+            if(a<10){
+                lcd.setCursor(15,1);
+                lcd.print(a);  
+            }
+            else if(a>10&&a<99){
+                lcd.setCursor(14,1);
+                lcd.print(a); 
+            }
+            else{
+                lcd.setCursor(13,1);
+                lcd.print(a); 
+            }
+            lcd.setCursor(17,1);
+            lcd.print("cm");
+            lcd.setCursor(13,3);
+            lcd.print("(#)Menu");
+        }
+        l=teclado.getKey();
+        if(l=="#"){
+            lcd.clear();
+            goto menu;
+        }
+    }                                       //fim sensor
+}                                        //fim programa
 void loop(){}
