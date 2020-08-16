@@ -60,9 +60,9 @@ void setup(){
     dia:                                   //inicio relogio
     l="";temp=0;umi=0;
     while(l!="#"){
-        if ((millis() - timer) > 1000){
-            temp = dht.readTemperature();
-            umi = dht.readHumidity();
+        if ((millis()-timer)>1000){
+            temp=dht.readTemperature();
+            umi=dht.readHumidity();
             timer=millis();
             lcd.setCursor(8,0);
             lcd.print("Dia");
@@ -81,8 +81,8 @@ void setup(){
         }
         l=teclado.getKey();
         if(l=="#"){
-                lcd.clear();
-                goto menu;
+            lcd.clear();
+            goto menu;
         }
     }                                       // fim relogio
     calc:                                   //inicio menu calc
